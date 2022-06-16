@@ -3,5 +3,7 @@ let nipples = 'pointy';
 const bros = 'boys';
 
 if(nipples !== 'pointy'){
-    console.log('useless');
+    console.log('useless')
+}else{
+    console.log('splendid')
 }
