@@ -13,3 +13,4 @@ function calculateSpread(firstTeam = 'team 1', secondTeam = 'team 2', firstScore
 console.log(calculateSpread('Detroit','Green Bay', 15, 12, 1, true))
 
 
+console.log(calculateSpread('miami', 'buffalo', 56, 23, 6.5, false))
