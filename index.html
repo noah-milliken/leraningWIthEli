@@ -1,16 +1,45 @@
 <!DOCTYPE html>
 <html lang="en">
+
 <head>
     <meta charset="UTF-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Document</title>
+    <style>
+        table,
+        td {
+            border: 1px solid #333;
+        }
+
+        thead,
+        tfoot {
+            background-color: #333;
+            color: #fff;
+        }
+    </style>
 </head>
+
 <body>
     <h1>hello!</h1>
-    <input type="text" name="teamName" id="teamName">
-    <button id="teamNameSubmit" onclick="teamNameSubmit()">Create Team</button>
+    <input type="text" name="firstTeam" id="firstTeam" placeholder="firstTeam">
+    <input type="text" name="secondTeam" id="secondTeam" placeholder="secondTeam">
+    <input type="number" name="week" id="week" placeholder="week #">
+    <button id="submitGame" onclick="submitGame()">Create Game</button>
     <h2 id="sumbitted"></h2>
+    <table>
+        <thead>
+            <tr>
+                <th>Team One</th>
+                <th>Team Two</th>
+                <th>Week #</th>
+
+            </tr>
+        </thead>
+        <tbody id="whatever">
+
+        </tbody>
+    </table>
 
 
 
@@ -18,20 +47,42 @@
     <script>
         // alert('hello')
         // document.getElementById("teamNameSubmit").addEventListener("click", ()=>alert('Ive been clicked'))
-        let teams = []
-        class team {
-            constructor (name){
-                this.name=name
+        let games = []
+        class game {
+            constructor(firstTeam, secondTeam, week) {
+                this.firstTeam = firstTeam
+                this.secondTeam = secondTeam
+                this.week = week
+                this.choice = 0
+            }
+            chooseTeam(team) {
+                this.choice = team
             }
         }
-        function teamNameSubmit(){
-            let submittedTeam = document.getElementById("teamName").value
-            // document.getElementById("sumbitted").innerText=submittedTeam
-            let teamObject = new team(submittedTeam)
-            teams.push(teamObject)
-            console.log(teams)
+        function submitGame() {
+            let firstTeam = document.getElementById("firstTeam").value
+            let secondTeam = document.getElementById("secondTeam").value
+            let week = document.getElementById("week").value
+
+            let gameObject = new game(firstTeam, secondTeam, week)
+            games.push(gameObject)
+            console.log(games)
+            buildGameList()
         }
-        
+        function buildGameList() {
+            let table = ''
+            games.forEach((game, index) => {
+                table += `<tr><td><button ${game.choice == 1 ? 'style="background-color:green"' : ''} onclick='selectTeam(${index},1)'>${game.firstTeam}</button></td><td><button ${game.choice == 2 ? 'style="background-color:red"' : ''} onclick='selectTeam(${index},2)'>${game.secondTeam}</button></td><td>${game.week}</td></tr>`
+            });
+            document.getElementById("whatever").innerHTML = table
+
+        }
+        function selectTeam(index, team) {
+            games[index].chooseTeam(team)
+            buildGameList()
+        }
+
     </script>
 </body>
+
 </html>
