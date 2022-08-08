@@ -5,7 +5,7 @@
     <meta charset="UTF-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Document</title>
+    <title>SpreadPicker</title>
     <style>
         table,
         td {
@@ -22,10 +22,13 @@
 
 <body>
     <h1>hello!</h1>
-    <input type="text" name="firstTeam" id="firstTeam" placeholder="firstTeam">
-    <input type="text" name="secondTeam" id="secondTeam" placeholder="secondTeam">
-    <input type="number" name="week" id="week" placeholder="week #">
-    <button id="submitGame" onclick="submitGame()">Create Game</button>
+    <form action="#" onsubmit='return submitGame(event)'>
+        <input type=" text" name="firstTeam" id="firstTeam" placeholder="firstTeam">
+        <input type="text" name="secondTeam" id="secondTeam" placeholder="secondTeam">
+        <input type="number" name="week" id="week" placeholder="week #">
+        <input type="number" name="spread" id="spread" placeholder="spread">
+        <input id="submitGame" type="submit">Create Game</input>
+    </form>
     <h2 id="sumbitted"></h2>
     <table>
         <thead>
@@ -33,6 +36,7 @@
                 <th>Team One</th>
                 <th>Team Two</th>
                 <th>Week #</th>
+                <th>Spread</th>
 
             </tr>
         </thead>
@@ -49,30 +53,50 @@
         // document.getElementById("teamNameSubmit").addEventListener("click", ()=>alert('Ive been clicked'))
         let games = []
         class game {
-            constructor(firstTeam, secondTeam, week) {
+            constructor(firstTeam, secondTeam, week, spread) {
                 this.firstTeam = firstTeam
                 this.secondTeam = secondTeam
                 this.week = week
                 this.choice = 0
+                this.spread = spread
+                this.firstTeamScore = 0
+                this.secondTeamScore = 0
             }
             chooseTeam(team) {
                 this.choice = team
             }
         }
-        function submitGame() {
+        function submitGame(event) {
+            console.log(event)
+            event.preventDefault()
             let firstTeam = document.getElementById("firstTeam").value
             let secondTeam = document.getElementById("secondTeam").value
             let week = document.getElementById("week").value
+            let spread = document.getElementById("spread").value
 
-            let gameObject = new game(firstTeam, secondTeam, week)
+
+            let gameObject = new game(firstTeam, secondTeam, week, spread)
             games.push(gameObject)
             console.log(games)
             buildGameList()
         }
         function buildGameList() {
             let table = ''
-            games.forEach((game, index) => {
-                table += `<tr><td><button ${game.choice == 1 ? 'style="background-color:green"' : ''} onclick='selectTeam(${index},1)'>${game.firstTeam}</button></td><td><button ${game.choice == 2 ? 'style="background-color:red"' : ''} onclick='selectTeam(${index},2)'>${game.secondTeam}</button></td><td>${game.week}</td></tr>`
+            games.forEach((game, gameIndex) => {
+                table += `
+                <tr>
+                    <td>
+                        <button ${game.choice == 1 ? 'style="background-color:green"' : ''} onclick='selectTeam(${gameIndex},1)'>${game.firstTeam}</button>
+                        <input type="number" onkeyup="updateTeamScore(${gameIndex},1,this.value)">
+                    </td>
+                    <td>
+                        <button ${game.choice == 2 ? 'style="background-color:red"' : ''} onclick='selectTeam(${gameIndex},2)'>${game.secondTeam}</button>
+                        <input type="number" onkeyup="updateTeamScore(${gameIndex},2,this.value)">
+                    </td>
+                    <td>${game.week}</td>
+                    <td>${game.spread}</td>
+                </tr>
+                `
             });
             document.getElementById("whatever").innerHTML = table
 
@@ -80,6 +104,15 @@
         function selectTeam(index, team) {
             games[index].chooseTeam(team)
             buildGameList()
+        }
+        function updateTeamScore(index, team, score) {
+            if (team === 1) {
+                games[index].firstTeamScore = score
+            } else {
+                games[index].secondTeamScore = score
+            }
+            console.log(games)
+
         }
 
     </script>
