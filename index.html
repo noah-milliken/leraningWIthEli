@@ -22,12 +22,12 @@
 
 <body>
     <h1>hello!</h1>
-    <form action="#" onsubmit='return submitGame(event)'>
+    <form action="#" id="submitGame">
         <input type=" text" name="firstTeam" id="firstTeam" placeholder="firstTeam">
         <input type="text" name="secondTeam" id="secondTeam" placeholder="secondTeam">
         <input type="number" name="week" id="week" placeholder="week #">
         <input type="number" name="spread" id="spread" placeholder="spread">
-        <input id="submitGame" type="submit">Create Game</input>
+        <input type="submit" />
     </form>
     <h2 id="sumbitted"></h2>
     <table>
@@ -66,9 +66,10 @@
                 this.choice = team
             }
         }
+        document.getElementById('submitGame').addEventListener('submit', submitGame)
         function submitGame(event) {
-            console.log(event)
-            event.preventDefault()
+            event.preventDefault();
+            console.log("here")
             let firstTeam = document.getElementById("firstTeam").value
             let secondTeam = document.getElementById("secondTeam").value
             let week = document.getElementById("week").value
