@@ -37,6 +37,7 @@
                 <th>Team Two</th>
                 <th>Week #</th>
                 <th>Spread</th>
+                <th>Winner</th>
 
             </tr>
         </thead>
@@ -57,13 +58,21 @@
                 this.firstTeam = firstTeam
                 this.secondTeam = secondTeam
                 this.week = week
-                this.choice = 0
+                this.choice = null
                 this.spread = spread
-                this.firstTeamScore = 0
-                this.secondTeamScore = 0
+                this.firstTeamScore = null
+                this.secondTeamScore = null
             }
             chooseTeam(team) {
                 this.choice = team
+            }
+            checkCorrect() {
+
+                if (this.choice != null, this.firstTeamScore != null, this.secondTeamScore != null, this.spread) {
+
+                    return calculateSpread(this.firstTeamScore, this.secondTeamScore, this.choice, this.spread)
+
+                }
             }
         }
         document.getElementById('submitGame').addEventListener('submit', submitGame)
@@ -88,14 +97,15 @@
                 <tr>
                     <td>
                         <button ${game.choice == 1 ? 'style="background-color:green"' : ''} onclick='selectTeam(${gameIndex},1)'>${game.firstTeam}</button>
-                        <input type="number" onkeyup="updateTeamScore(${gameIndex},1,this.value)">
+                        <input type="number" oninput="updateTeamScore(${gameIndex},1,this.value)" value="${game.firstTeamScore}">
                     </td>
                     <td>
                         <button ${game.choice == 2 ? 'style="background-color:red"' : ''} onclick='selectTeam(${gameIndex},2)'>${game.secondTeam}</button>
-                        <input type="number" onkeyup="updateTeamScore(${gameIndex},2,this.value)">
+                        <input type="number" oninput="updateTeamScore(${gameIndex},2,this.value)" value="${game.secondTeamScore}">
                     </td>
                     <td>${game.week}</td>
                     <td>${game.spread}</td>
+                    <td>${game.checkCorrect()}</td>
                 </tr>
                 `
             });
@@ -115,6 +125,18 @@
             console.log(games)
 
         }
+
+        function calculateSpread(firstScore = 10, secondScore = 7, spread = 2, ChoseFirstTeam = true) {
+            // team1 score 20 spread 6.5 team2 score 35
+            let spreadResult = firstScore - secondScore
+            console.log(firstScore, secondScore, spread, ChoseFirstTeam)
+            if (spreadResult >= spread && ChoseFirstTeam) {
+                return `<span>✓</span>`
+            }
+            return `<span>X</span>`
+        }
+
+
 
     </script>
 </body>
